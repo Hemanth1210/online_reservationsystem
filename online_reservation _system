@@ -1,0 +1,96 @@
+import java.util.Scanner;
+
+class ReservationSystem {
+    private boolean[] seats;
+
+    public ReservationSystem(int numSeats) {
+        seats = new boolean[numSeats];
+        for (int i = 0; i < numSeats; i++) {
+            seats[i] = true; // Initialize all seats as available
+        }
+    }
+
+    public void displayAvailableSeats() {
+        System.out.println("Available seats:");
+        for (int i = 0; i < seats.length; i++) {
+            if (seats[i]) {
+                System.out.print((i + 1) + " ");
+            }
+        }
+        System.out.println();
+    }
+
+    public boolean reserveSeat(int seatNumber) {
+        if (seatNumber < 1 || seatNumber > seats.length) {
+            System.out.println("Invalid seat number.");
+            return false;
+        }
+
+        if (seats[seatNumber - 1]) {
+            seats[seatNumber - 1] = false;
+            System.out.println("Seat " + seatNumber + " reserved successfully.");
+            return true;
+        } else {
+            System.out.println("Seat " + seatNumber + " is already taken.");
+            return false;
+        }
+    }
+
+    public boolean cancelReservation(int seatNumber) {
+        if (seatNumber < 1 || seatNumber > seats.length) {
+            System.out.println("Invalid seat number.");
+            return false;
+        }
+
+        if (!seats[seatNumber - 1]) {
+            seats[seatNumber - 1] = true;
+            System.out.println("Reservation for seat " + seatNumber + " cancelled successfully.");
+            return true;
+        } else {
+            System.out.println("Seat " + seatNumber + " is not reserved.");
+            return false;
+        }
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the number of seats in the reservation system: ");
+        int numSeats = scanner.nextInt();
+
+        ReservationSystem reservationSystem = new ReservationSystem(numSeats);
+
+        while (true) {
+            System.out.println("1. Display available seats");
+            System.out.println("2. Reserve a seat");
+            System.out.println("3. Cancel a reservation");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    reservationSystem.displayAvailableSeats();
+                    break;
+                case 2:
+                    System.out.print("Enter the seat number to reserve: ");
+                    int reserveSeatNumber = scanner.nextInt();
+                    reservationSystem.reserveSeat(reserveSeatNumber);
+                    break;
+                case 3:
+                    System.out.print("Enter the seat number to cancel reservation: ");
+                    int cancelSeatNumber = scanner.nextInt();
+                    reservationSystem.cancelReservation(cancelSeatNumber);
+                    break;
+                case 4:
+                    System.out.println("Exiting the program...");
+                    scanner.close();
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}
